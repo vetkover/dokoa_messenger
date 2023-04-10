@@ -1,0 +1,147 @@
+.main-container{
+    display: flex;
+    height: 100vh;
+
+    .chatList-container{
+      height: 100vh;
+      max-width: 470px;
+      background-color: red;
+    }
+  
+    .chatWindow-container{
+      display:flex;
+      flex-grow: 1;
+      background-color: blue;
+  
+      .chatWindow-body{
+        flex: 1;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(15, 1fr);
+        background-color: yellow;
+        .chatWindow-messages{
+            grid-column: 1/4;
+            grid-row: 1/15;
+            overflow-y: scroll;
+
+  
+          #myMessage{
+            display: flex;
+            flex-direction: row-reverse;
+            float: right;
+            clear: both;
+          }
+  
+          #otherMessage{
+            float: left;
+            clear: both;
+          }
+  
+          .chatWindow-content{
+            display: flex;
+            max-width: 500px;
+            height: auto;
+            background-color: rgb(0, 255, 68);
+  
+            .senderAvatar{
+              width: 132px;
+              position: relative;
+  
+              img {
+                position: absolute;
+                bottom: 0;
+                width: 62px;
+                border-radius: 50%;
+              }
+            }
+  
+            .chatMain-block{
+              padding: 0px 15px 0px 10px;
+              background-color: rgb(183, 255, 0);
+  
+              .messageData{
+                height: 25px;
+                display: flex;
+                justify-content: space-between;
+              }
+            }
+          }
+        }
+  
+        .chatWindow-controlPanel{
+            grid-row: 15/-1;
+            grid-column: 1/4;
+            height: 64px;
+            background-color: rgb(255, 0, 217);
+  
+          .chatWindow-controlPanel_Container{
+            bottom: 0;
+            .chatWindow-controlPanel_InputBox{
+
+              input{
+                width: -webkit-fill-available;
+                height: 23px;
+              }
+            }
+
+            .chatWindow-controlPanel_ButtonBox{
+              button{
+                width: 150px;
+                height: 15px;
+              }
+            }
+            
+          } 
+        }
+      }
+    }
+  
+    .chatList-listContainer{
+      overflow-y: scroll;
+      height: 100vh;
+      width: 470px;
+  
+      .chatList-content{
+        position: relative;
+        display: grid;
+        border: 1px solid rgb(255, 255, 255);
+        grid-template-columns: repeat(15, 1fr);
+        grid-template-rows: repeat(7, 11px);
+        background-color: rgb(52, 50, 50);
+  
+        #lastMessageText{
+          position: absolute;
+          width: -webkit-fill-available;
+          height: 15px;
+          color: white;
+          grid-column: 2;
+          grid-row: 4;
+          white-space: nowrap; 
+          overflow: hidden; 
+          text-overflow: ellipsis; 
+        }   
+  
+        #lastMessageTime{
+          color: white;
+          grid-auto-columns: 100px;
+          grid-column: 14;
+          grid-row: 1;
+        }
+  
+        #userAvatar{
+          grid-column: 1;
+          grid-row: 2;
+          width: 62px;
+          border-radius: 50%;
+        }
+  
+        #userName{
+          color: rgb(240, 239, 239);
+          grid-column: 2;
+          grid-row: 1;
+          align-items: start;
+        }
+      }
+    }
+  }
+  
