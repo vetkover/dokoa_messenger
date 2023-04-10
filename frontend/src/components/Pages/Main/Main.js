@@ -10,20 +10,29 @@ function MessagelistContent(){
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState({});
     const [isChatId, setChatId] = useState(null)
+
+    function setupChatId(newid){
+        setChatId(newid);
+        setIsLoading(true);
+    }
+    window.setupChatId = setupChatId;
+    window.isChatId = isChatId;
+
     useEffect(() => {
-        fetch("/api/message/messages?id=1")
-          .then((response) => response.json())
-          .then((data) => {
-            setData(data);
-            setIsLoading(false);
-          });
+
       }, []);
 
-      
-    if (isLoading && isChatId != null) {
-      return <div>Завантаження...</div>;
+    if(isLoading && isChatId != null){
+        fetch(`/api/message/messages?id=${isChatId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setData(data);
+          setIsLoading(false);
+        });
+    }  
+    if (isChatId == null) {
+      return <div>choose a chat</div>;
     } else if (!isLoading && isChatId != null) {
-        console.log(data.result)
         const userList = data.result.map((item, index) => (
             <div className='chatWindow-content' id='myMessage' key={index}>
             <div className='senderAvatar'>
@@ -44,12 +53,12 @@ function MessagelistContent(){
 
 function ChatlistContent(){
     const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState({});
+    const [data, setData] = useState([]);
     const navigate = useNavigate();
 
     whoami(navigate)
     useEffect(() => {
-        fetch("/api/message/chatList")
+        fetch("/api/message/chatList?id=1")
           .then((response) => response.json())
           .then((data) => {
             setData(data);
@@ -59,16 +68,20 @@ function ChatlistContent(){
 
       
     if (isLoading) {
-      return <div>Завантаження...</div>;
+      return <div>Loading...</div>;
     } else {
-        const userList = data.result.map(item => (
-            <div onClick={() => {}} className='chatList-content' key={item.chatid}>
-                <img id='userAvatar' src={avatar}></img>
-                <p id='userName'>{item.messages.author}</p>
-                <p id='lastMessageTime'>{item.messages.time}</p>
-                <p id='lastMessageText'>{item.messages.text}</p>
-            </div>
-          ));
+const userList = data.result.map((item, index) => {
+  const lastMessage = item.messages || {};
+  return (
+    <div onClick={() => {window.setupChatId(item.chatid)}} className='chatList-content' key={item.chatid}>
+      <img id='userAvatar' src={avatar}></img>
+      <p id='userName'>{lastMessage.author || ""}</p>
+      <p id='lastMessageTime'>{lastMessage.time || ""}</p>
+      <p id='lastMessageText'>{lastMessage.text || ""}</p>
+    </div>
+  );
+});
+
       return <div>{userList}</div>;;
   }
 }
@@ -81,8 +94,7 @@ constructor(props) {
     
   }
   sendMessage(){
-    console.log(this.inputMessageBox.current.value);
-    fetch('/api/message/sendMessage?id=1', {
+    fetch(`/api/message/sendMessage?id=${window.isChatId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -31,6 +31,8 @@ function getCookie(name) {
         return(
       navigate("/")
         )
+      } else{
+        return response;
       }
     }
   )
