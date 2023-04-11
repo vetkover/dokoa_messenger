@@ -13,10 +13,10 @@ let whoamiData;
 
 function UserIsAuth() {
     
-    if (whoamiData && whoamiData?.username != undefined ) {
+    if (whoamiData && whoamiData.username != undefined ) {
       return (
         <div>
-          <p>It seems you are authorized {whoamiData.username}, do you want to return? </p>
+            <p>It seems you already authorized {whoamiData.username}, do you want to return? </p>
         </div>
       );
     }

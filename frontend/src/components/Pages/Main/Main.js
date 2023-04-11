@@ -5,6 +5,7 @@ import { whoami } from "../../Modules/api/whoami"
 
 import avatar from "../../resource/avatar.png"
 
+let whoamiData;
 
 function MessagelistContent(){
     const [isLoading, setIsLoading] = useState(true);
@@ -55,6 +56,7 @@ function ChatlistContent(){
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigate = useNavigate();
+    window.navigate = navigate;
 
     whoami(navigate)
     useEffect(() => {
@@ -91,8 +93,23 @@ constructor(props) {
     super(props);
     this.inputMessageBox = createRef();
     this.sendMessage = this.sendMessage.bind(this);
-    
+
+    this.state = {
+      iswhoamiData: null
+    }
   }
+
+
+  componentDidMount() {
+      let promise = whoami(window.navigate);
+      promise.then(result => {
+      this.iswhoamiData(result);
+      whoamiData = this.iswhoamiData;
+      });
+    }
+
+
+
   sendMessage(){
     fetch(`/api/message/sendMessage?id=${window.isChatId}`, {
         method: 'POST',
@@ -112,7 +129,6 @@ render (){
             <div className='chatList-container'>
                 <div className='chatList-listContainer'>
                     <ChatlistContent />
-                    
                 </div>
             </div>
             <div className='chatWindow-container'>
