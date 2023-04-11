@@ -9,20 +9,36 @@ import logo from "../../resource/logo.png";
 import eye_open from "../Auth/resource/eye_open.svg"
 import eye_close from "../Auth/resource/eye_close.svg"
 
-let whoamiData;
+let whoamiData = undefined;
+const promise = whoami(window.navigate);
+promise.then(result => {
+    whoamiData = result
+  })
+  .then(result =>
+    window.userIsAuthUpdate()
+  );
 
-function UserIsAuth() {
-    
-    if (whoamiData && whoamiData.username != undefined ) {
-      return (
+function UserIsAuth(){
+    const [updateMe, setUpdateMe] = useState(null)
+
+    function userIsAuthUpdate(){
+        setUpdateMe(0)
+    }
+
+    window.userIsAuthUpdate = userIsAuthUpdate;
+     
+    if(whoamiData?.username != undefined){
+        
+    return(
         <div>
-            <p>It seems you already authorized {whoamiData.username}, do you want to return? </p>
+            it's seams as you already login {whoamiData.username}
         </div>
-      );
+        )
     }
 }
 
-  
+
+
 const Auth = () => {
 
     const navigate = useNavigate();
@@ -31,18 +47,13 @@ const Auth = () => {
     const inputPassword = createRef();
     const inputRemember = createRef();
     const passwordImgBtn = createRef();
+    
+    window.navigate = navigate; 
 
-    const [iswhoamiData, setWhoamiData] = useState(null);
-
-    useEffect(() => {
-        const promise = whoami(navigate);
-        promise.then(result => {
-        setWhoamiData(result);
-        whoamiData = iswhoamiData;
-        });
-      }, []);
 
     let [eyeOption, setEyeOption] = useState(eye_close);
+
+
 
 
     const eyeChange = () => { //change a visible of password
@@ -113,9 +124,7 @@ function redirect(response){
                     <button className='loginButton' onClick={login}>login</button>
                 </div>
             </div>
-            <React.Fragment>
-                <UserIsAuth />
-            </React.Fragment>
+            <UserIsAuth />
         </div>
     </div>
     );
