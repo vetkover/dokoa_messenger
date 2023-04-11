@@ -70,7 +70,7 @@ function ChatlistContent(){
     if (isLoading) {
       return <div>Loading...</div>;
     } else {
-const userList = data.result.map((item, index) => {
+const userList = data.result.map((item) => {
   const lastMessage = item.messages || {};
   return (
     <div onClick={() => {window.setupChatId(item.chatid)}} className='chatList-content' key={item.chatid}>

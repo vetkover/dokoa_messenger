@@ -4,7 +4,7 @@ import Main from "./components/Pages/Main/Main"
 const AppRoutes = [
 {
   index: true,
-  element: <Auth />
+  element: <Main />
 }
 ,{
     path: "auth",

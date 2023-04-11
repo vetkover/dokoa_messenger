@@ -4,14 +4,12 @@ const userInfo = require('./userInfo.js')
 
 async function sendMessage(req, chatid) {
     const author =  await whoami.module.whoami(req.headers.cookie);
-    console.log(author.username + "osas")
+    console.log(author.username + " send message")
    let result = await mongo.db('Server').collection('chats').updateOne(
     { chatid: chatid },
     { $push: { messages: {
         text: req.body.text,
         author: author.id,
-        nickname: userInfo.module.userInfo(author.id)
-
     } } }
   );
     if(result != null){

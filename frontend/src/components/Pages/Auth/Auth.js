@@ -9,6 +9,20 @@ import logo from "../../resource/logo.png";
 import eye_open from "../Auth/resource/eye_open.svg"
 import eye_close from "../Auth/resource/eye_close.svg"
 
+let whoamiData;
+
+function UserIsAuth() {
+    
+    if (whoamiData && whoamiData?.username != undefined ) {
+      return (
+        <div>
+          <p>It seems you are authorized {whoamiData.username}, do you want to return? </p>
+        </div>
+      );
+    }
+}
+
+  
 const Auth = () => {
 
     const navigate = useNavigate();
@@ -18,10 +32,18 @@ const Auth = () => {
     const inputRemember = createRef();
     const passwordImgBtn = createRef();
 
-    
+    const [iswhoamiData, setWhoamiData] = useState(null);
 
+    useEffect(() => {
+        const promise = whoami(navigate);
+        promise.then(result => {
+        setWhoamiData(result);
+        whoamiData = iswhoamiData;
+        });
+      }, []);
 
     let [eyeOption, setEyeOption] = useState(eye_close);
+
 
     const eyeChange = () => { //change a visible of password
         if(inputPassword.current.type == "password"){
@@ -91,6 +113,9 @@ function redirect(response){
                     <button className='loginButton' onClick={login}>login</button>
                 </div>
             </div>
+            <React.Fragment>
+                <UserIsAuth />
+            </React.Fragment>
         </div>
     </div>
     );

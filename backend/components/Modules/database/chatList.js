@@ -12,7 +12,6 @@ async function chatList(id) {
 
     return mongoResult;
   } catch (err) {
-    console.log(err);
     throw err;
   }
 }

@@ -5,7 +5,6 @@ async function messages(id) {
     const mongoResult = await mongo.db('Server').collection('chats').findOne({
       "chatid": id
     });
-    console.log(mongoResult)
     return mongoResult.messages ;
   } catch (err) {
     console.log(err);
