@@ -6,12 +6,6 @@
       display:flex;
       flex-grow: 1;
       background-color: blue;
-
-      @media (max-width: 980px) {
-        &{
-        display: none;
-        }
-      }
   
       .chatWindow-body{
         flex: 1;
@@ -111,8 +105,13 @@
       height: 100vh;
       max-width: 470px;
       background-color: red;
-
       overflow-x: hidden;
+
+      .chatList-controls{
+        max-width: 470px;
+        min-width: 470px;
+      }
+
     .chatList-listContainer{
       overflow-y: scroll;
       height: 100vh;

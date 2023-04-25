@@ -1,175 +1,142 @@
-import React, { Component, createRef, useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { BrowserRouter, Route, Routes, Router, useNavigate } from "react-router-dom";
-import "../Main/Main.scss"
-import { whoami } from "../../Modules/api/whoami"
+import React, { useState, useEffect, useRef} from "react";
+import { Navigate } from "react-router-dom";
+import "../Main/Main.scss";
+import { whoami } from "../../Modules/api/whoami";
 
-import avatar from "../../resource/avatar.png"
+import avatar from "../../resource/avatar.png";
 
-function MessagelistContent(){
-    const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState({});
-    const [isChatId, setChatId] = useState(null)
+function MessagelistContent() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState({});
+  const [isChatId, setChatId] = useState(null);
 
-    function setupChatId(newid){
-        setChatId(newid);
-        setIsLoading(true);
-    }
-    window.setupChatId = setupChatId;
-    window.isChatId = isChatId;
+  function setupChatId(newid) {
+    setChatId(newid);
+    setIsLoading(true);
+  }
+  window.setupChatId = setupChatId;
+  window.isChatId = isChatId;
+  window.whoamiResult = whoami(Navigate);
 
+  const [whoamiData, setWhoamiData] = useState(null);
+  useEffect(() => {
+    const whoamiData = window.whoamiResult.then((data) => setWhoamiData(data));
+  }, []);
 
-      const [whoamiData, setWhoamiData] = useState(null);
-    useEffect(() => {
-      const whoamiData = window.whoamiResult.then((data) => setWhoamiData(data));
-      if (!isLoading && isChatId != null) {
-
-      }
-
-
-      }, []);
-
-    if(isLoading && isChatId != null){
-        fetch(`/api/message/messages?id=${isChatId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setData(data);
-          setIsLoading(false);
-        });
-    }  
-    if (isChatId == null) {
-      return <div>choose a chat</div>;
-} else if (!isLoading && isChatId != null) {
-      const userList = data.result.map((item, index) => {
+  if (isLoading && isChatId != null) {
+    fetch(`/api/message/messages?id=${isChatId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+        setIsLoading(false);
+      });
+  }
+  if (isChatId == null) {
+    return <div>choose a chat</div>;
+  } else if (!isLoading && isChatId != null) {
+    const userList = data.result.map((item, index) => {
       const isMyMessage = item.author == whoamiData.id;
-      const messageId = isMyMessage ? 'myMessage' : 'otherMessage';
+      const messageId = isMyMessage ? "myMessage" : "otherMessage";
       return (
-        <div className='chatWindow-content' id={messageId} key={index}>
-          <div className='senderAvatar'>
+        <div className="chatWindow-content" id={messageId} key={index}>
+          <div className="senderAvatar">
             <img src={avatar}></img>
           </div>
-          <div className='chatMain-block'>
-            <div className='messageData'>
+          <div className="chatMain-block">
+            <div className="messageData">
               <p>{item.author}</p>
               <p>{item.time}</p>
             </div>
             <p>{item.text}</p>
           </div>
         </div>
-      )});
-    return <React.Fragment> {userList} </React.Fragment>
+      );
+    });
+    return <React.Fragment> {userList} </React.Fragment>;
   }
 }
 
+function Main() {
+  const inputMessageBox = useRef();
+  const chatlistContent = useRef();
+  const chatWindowMessages = useRef();
 
-
-class Main extends Component{
-constructor(props) {
-    super(props);
-    this.inputMessageBox = createRef();
-    this.chatlistContent = createRef();
-    this.sendMessage = this.sendMessage.bind(this);
-    
-  }
-
-  componentDidMount(){
-  }
-  sendMessage(){
+  function sendMessage() {
     fetch(`/api/message/sendMessage?id=${window.isChatId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            text: `${this.inputMessageBox.current.value}`,
-           }),
-    })
-    .then(response => response.json())
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        text: `${inputMessageBox.current.value}`,
+      }),
+    }).then((response) => response.json());
   }
-
-
-  
-render (){
-    return(
-        <div className='main-container'>
-            <div className='chatList-container' ref={this.chatlistContent}>
-                <div className='chatList-listContainer'>
-                <ChatlistContent chatContent={this.chatlistContent} />
-                </div>
-            </div>
-            <div className='chatWindow-container'>
-                <div className='chatWindow-body'>
-                    <div className='chatWindow-messages'>
-                    <MessagelistContent />
-                    </div>
-                    <div className='chatWindow-controlPanel'>
-                    <div className='chatWindow-controlPanel_Container'>
-
-                        <div className='chatWindow-controlPanel_InputBox'>
-                            <input ref={this.inputMessageBox} id='InputMessageBox'></input>
-                            </div>
-
-                            <div className='chatWindow-controlPanel_ButtonBox'>
-                            <button onClick={ this.sendMessage}>
-                                send message
-                                </button>
-                            </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
+  return (
+    <div className="main-container">
+      <div className="chatList-container" ref={chatlistContent}>
+        <div className="chatList-controls"></div>
+        <div className="chatList-listContainer">
+          <ChatlistContent />
         </div>
-        )};
-    }
-
-    class ChatlistContent extends Main {
-      constructor(props) {
-        super(props);
-        this.state = {
-          isLoading: true,
-          data: [],
-        };
-        this.navigate = this.props.navigate;
-        window.whoamiResult = whoami(this.navigate);
-      }
-      
-      
-      componentDidMount() {
-        fetch("/api/message/chatList?id=1")
-          .then((response) => response.json())
-          .then((data) => {
-            this.setState({ data: data, isLoading: false });
-          });
-          const myRef = this.chatContent;
-          console.log(myRef);
-      }
-    
-      render() {
-        const { isLoading, data } = this.state;
-    
-        if (isLoading) {
-          return <div>Loading...</div>;
-        } else {
-          const userList = data.result.map((item) => {
-            const lastMessage = item.messages || {};
-            return (
-              <div
-                onClick={() => {
-                  window.setupChatId(item.chatid);
-                }}
-                className="chatList-content"
-                key={item.chatid}
-              >
-                <img id="userAvatar" src={avatar}></img>
-                <p id="userName">{lastMessage.author || ""}</p>
-                <p id="lastMessageTime">{lastMessage.time || ""}</p>
-                <p id="lastMessageText">{lastMessage.text || ""}</p>
+      </div>
+      <div className="chatWindow-container">
+        <div className="chatWindow-body">
+          <div className="chatWindow-messages" ref={chatWindowMessages}>
+            <MessagelistContent />
+          </div>
+          <div className="chatWindow-controlPanel">
+            <div className="chatWindow-controlPanel_Container">
+              <div className="chatWindow-controlPanel_InputBox">
+                <input ref={inputMessageBox} id="InputMessageBox"></input>
               </div>
-            );
-          });
-          return <React.Fragment ref={this.chatContent}> {userList} </React.Fragment>;
-        }
-      }
-    }
 
+              <div className="chatWindow-controlPanel_ButtonBox">
+                <button onClick={sendMessage}>send message</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ChatlistContent() {
+  const [isData, setData] = useState(null);
+  let isLoading = useRef(false);
+
+  useEffect(() => {
+    fetch("/api/message/chatList?id=1")
+      .then((response) => response.json())
+      .then((data) => {
+        setData({ data });
+        isLoading.current = true;
+      });
+  }, []);
+
+  if (!isLoading.current) {
+    return <div>Loading...</div>;
+  } else {
+    const userList = isData.data.result.map((item) => {
+      const lastMessage = item.messages || {};
+      return (
+        <div
+          onClick={() => {
+            window.setupChatId(item.chatid);
+          }}
+          className="chatList-content"
+          key={item.chatid}
+        >
+          <img id="userAvatar" src={avatar}></img>
+          <p id="userName">{lastMessage.author || ""}</p>
+          <p id="lastMessageTime">{lastMessage.time || ""}</p>
+          <p id="lastMessageText">{lastMessage.text || ""}</p>
+        </div>
+      );
+    });
+    return <React.Fragment> {userList} </React.Fragment>;
+  }
+}
 
 export default Main;
