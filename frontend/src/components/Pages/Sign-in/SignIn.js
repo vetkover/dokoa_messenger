@@ -49,25 +49,95 @@ const SignIn = () => {
   const require1 = createRef();
   const require2 = createRef();
   const require3 = createRef();
+  const require4 = createRef();
   const [isDisabled, setDisabled] = useState("disabled");
-  function checkRequireData(){
+  async function checkRequireData() {
+    async function nicknameIsFree() {
+      let status = false;
+      await fetch("/api/users/nicknameisAvailable", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nickname: `${inputNickname.current.value}`,
+        }),
+      })
+        .then((response) => response.json())
+        .then((response) => {
+          status = response.isAvailable;
+        });
+      return status;
+    }
 
-    let requireStatus = [0,0,0]
+    let requireStatus = [];
 
     //nickname
+    if (inputNickname.current.value != "") {
+      if (
+        inputNickname.current.value.length >= 3 &&
+        inputNickname.current.value.length <= 16
+      ) {
+        (async () => {
+          const result = await nicknameIsFree();
+          if (result) {
+            requireStatus[0] = 1;
+            require1.current.id = "requireAccept";
+          } else {
+            requireStatus[0] = 0;
+            require1.current.id = "requireError";
+          }
+        })();
 
-    if(inputNickname.current.value != "" && inputNickname.current.value >= 3 && inputNickname.current.value <= 16){
-        requireStatus[0] = 1;
-        require1.current.id = "requireAccept"
+        requireStatus[1] = 1;
+        require2.current.id = "requireAccept";
+      } else {
+        requireStatus[1] = 0;
+        require2.current.id = "requireError";
+      }
+    } else {
+      require1.current.id = "";
+      require2.current.id = "";
+      requireStatus[0] = 0;
+      requireStatus[1] = 0;
     }
 
     //password
+    if (inputPassword.current.value != "") {
+      if (inputPassword.current.value.length >= 8) {
+        requireStatus[2] = 1;
+        require3.current.id = "requireAccept";
+      } else {
+        requireStatus[2] = 0;
+        require3.current.id = "requireError";
+      }
 
+      if (inputPassword.current.value.indexOf(" ") === -1) {
+        requireStatus[3] = 1;
+        require4.current.id = "requireAccept";
+      } else {
+        requireStatus[3] = 0;
+        require4.current.id = "requireError";
+      }
+    } else {
+      require3.current.id = "";
+      require4.current.id = "";
+      requireStatus[2] = 0;
+      requireStatus[3] = 0;
+    }
+
+    if (requireStatus.every((status) => status === 1)) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
   }
 
-
   async function SignInFetch() {
-    if (inputNickname.current.value != "" && inputPassword.current.value != "") {
+    if (
+      inputNickname.current.value != "" &&
+      inputPassword.current.value != ""
+    ) {
       fetch("/api/auth/signin", {
         method: "POST",
         headers: {
@@ -104,12 +174,21 @@ const SignIn = () => {
           <div className="signinForm">
             <div className="signinOption">
               <label>username</label>
-              <input ref={inputNickname} onChange={checkRequireData} type="email"></input>
+              <input
+                ref={inputNickname}
+                onChange={checkRequireData}
+                type="email"
+              ></input>
             </div>
 
             <div className="signinOptionRequire-container">
               <div className="signinOptionRequire">
                 <span ref={require1} className="requireCircle"></span>
+                <label>Nickname is unique</label>
+              </div>
+
+              <div className="signinOptionRequire">
+                <span ref={require2} className="requireCircle"></span>
                 <label>
                   The number of characters is not less than 3 and not more than
                   16
@@ -119,7 +198,11 @@ const SignIn = () => {
 
             <div className="signinOption">
               <label>password</label>
-              <input ref={inputPassword} onChange={checkRequireData} type="password"></input>
+              <input
+                ref={inputPassword}
+                onChange={checkRequireData}
+                type="password"
+              ></input>
               <img
                 ref={passwordImgBtn}
                 id="passwordImgBtn"
@@ -130,16 +213,20 @@ const SignIn = () => {
 
             <div className="signinOptionRequire-container">
               <div className="signinOptionRequire">
-                <span ref={require2} className="requireCircle"></span>
+                <span ref={require3} className="requireCircle"></span>
                 <label>The number of characters is not less than 8</label>
               </div>
               <div className="signinOptionRequire">
-                <span ref={require3} className="requireCircle"></span>
+                <span ref={require4} className="requireCircle"></span>
                 <label>Password doesn't contain space</label>
               </div>
             </div>
 
-            <button className="signinButton" disabled={isDisabled} onClick={SignInFetch}>
+            <button
+              className="signinButton"
+              disabled={isDisabled}
+              onClick={SignInFetch}
+            >
               Sign in!
             </button>
           </div>

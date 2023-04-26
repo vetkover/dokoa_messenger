@@ -116,6 +116,7 @@
               border-radius: 50%;
               border: 1px double rgb(38, 38, 38);
               margin: 6px 8px 0 9px;
+              flex-shrink: 0;
             }
             label {
               color: rgb(176, 176, 176);
@@ -127,7 +128,7 @@
           background: #961f1f46;
           color: rgb(255, 255, 255);
 
-          &:disabled{
+          &:disabled {
             background: none;
           }
         }

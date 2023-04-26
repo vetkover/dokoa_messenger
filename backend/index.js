@@ -8,17 +8,20 @@ const PORT = process.env.PORT || 3001
  const chatList = require('./routes/message/chatList.js')
  const messages = require('./routes/message/messages.js')
  const sendMessage = require('./routes/message/sendMessage.js')
+ const nicknameisAvailable = require('./routes/users/nicknameisAvailable.js')
 
  
  
 app.use(express.json());
 app.use('/api/auth/',  login)
+app.use('/api/users/', nicknameisAvailable)
 
 app.use(midleware)
 app.use('/api/message/', chatList)
 app.use('/api/message/', messages)
 app.use('/api/auth/', whoami)
 app.use('/api/message/', sendMessage)
+
 
 
  app.listen(PORT, () =>{
