@@ -1,5 +1,6 @@
 import Auth from "./components/Pages/Auth/Auth"
 import Main from "./components/Pages/Main/Main"
+import SignIn from "./components/Pages/Sign-in/SignIn"
 
 const AppRoutes = [
 {
@@ -13,6 +14,10 @@ const AppRoutes = [
   {
   path: "main",
   element: <Main />
+  },
+  {
+    path: "sign-in",
+    element: <SignIn />
   }
 
 ];

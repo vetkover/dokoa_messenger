@@ -1,81 +1,107 @@
-.Auth-main{
+.Auth-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  .Auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    .Auth-container{
+    flex-direction: column;
+    background: #3f3f3f;
+    width: 500px;
+    .logoContainer {
+      display: flex;
+      margin-bottom: 12px;
+      img {
+        height: 150px;
+      }
+    }
+
+    .loginContainer {
+      .loginForm {
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        background: #3f3f3f ;
-        width: 500px;
-        .logoContainer{
-            display: flex;
-            margin-bottom: 12px;
-            img {height: 150px}
-        }
 
-        .loginContainer{
+        .loginOption {
+          position: relative;
+          padding: 8px;
 
+          label {
+            position: absolute;
+            left: 17px;
+            bottom: 38px;
+            color: whitesmoke;
+            font-size: 14px;
+          }
 
-            .loginForm{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-
-                .loginOption{
-                    position: relative; ;
-                    padding: 8px;
-
-                    label{
-                        position: absolute;
-                        left: 17px;
-                        bottom: 38px;
-                        color: rgb(255, 255, 255);
-                        font-size: 14px;
-                    }
-
-                    input{
-                        width: 220px;;
-                        height: 33px;
-                        border: solid 2px rgb(33, 33, 33);
-                        border-radius: 8px;
-                        background: #393838;
-                        color:rgb(255, 255, 255);
-                        font-size: 16px;
-                        padding-left:8px;
-                        &:focus{
-                            background: #2f2f2f;
-                        }
-                    }
-
-                    #passwordImgBtn{
-                        position: absolute;
-                        right: 18px;
-                        bottom: 11px;
-                        width: 31px;
-                    }
-                }
-                .rememberMe{
-                    display: flex;
-                    width: 100%;
-                    align-items: center;
-                    justify-content: flex-start;
-                    padding: 5px;
-                    label{
-                        margin-left: 9px;
-                        color: rgb(255, 255, 255);
-                    }
-
-                }
-                .loginButton{
-                    width: 75px;
-                    background: #961f1f46;
-                    color: rgb(255, 255, 255);
-                }
+          input {
+            width: 220px;
+            height: 33px;
+            border: solid 2px rgb(33, 33, 33);
+            border-radius: 8px;
+            background: #393838;
+            color: whitesmoke;
+            font-size: 16px;
+            padding-left: 8px;
+            &:focus {
+              background: #2f2f2f;
             }
+          }
+
+          #passwordImgBtn {
+            position: absolute;
+            right: 18px;
+            bottom: 11px;
+            width: 31px;
+          }
         }
+        .rememberMe {
+          display: flex;
+          width: 100%;
+          align-items: center;
+          justify-content: flex-start;
+          padding: 5px;
+          label {
+            margin-left: 9px;
+            color: rgb(255, 255, 255);
+          }
+        }
+        .loginButton {
+          width: 75px;
+          background: #961f1f46;
+          color: rgb(255, 255, 255);
+        }
+      }
+    }
+  }
+
+  .Auth-UserOptions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: #3f3f3f;
+    width: 500px;
+    height: 24px;
+
+    button {
+      background-color: transparent;
+      cursor: pointer;
+      color: whitesmoke;
+      border: none;
+      
+    }
+
+    #button-left{
+        grid-column: 2/4;
+        grid-row: 1;
 
     }
+    #button-right{
+        grid-row: 1;
+        grid-column: 3/5;
+        margin-left: 16px;
+    }
+  }
 }

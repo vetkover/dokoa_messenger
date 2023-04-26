@@ -4,7 +4,7 @@ router = express.Router()
 
 router.get('/chatList',async (req,res) => {
     const id = Number(req.query.id);
-    let result =  await mongo.chatList(1)
+    let result =  await mongo.chatList(id)
         res
         .json({ 
     result

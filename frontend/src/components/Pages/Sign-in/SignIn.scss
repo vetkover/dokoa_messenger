@@ -1,0 +1,137 @@
+.SighIn-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  .SighIn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #3f3f3f;
+    width: 500px;
+
+    p {
+      color: white;
+    }
+
+    .logoContainer {
+      display: flex;
+      margin-bottom: 12px;
+      img {
+        height: 150px;
+      }
+    }
+
+    .signinContainer {
+      display: contents;
+      .signinForm {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        .signinOption {
+          position: relative;
+          padding: 8px;
+
+          label {
+            position: absolute;
+            left: 17px;
+            bottom: 38px;
+            color: whitesmoke;
+            font-size: 14px;
+          }
+
+          input {
+            width: 220px;
+            height: 33px;
+            border: solid 2px rgb(33, 33, 33);
+            border-radius: 8px;
+            background: #393838;
+            color: whitesmoke;
+            font-size: 16px;
+            padding-left: 8px;
+            &:focus {
+              background: #2f2f2f;
+            }
+          }
+
+          #passwordImgBtn {
+            position: absolute;
+            right: 18px;
+            bottom: 11px;
+            width: 31px;
+          }
+        }
+
+        .signinOptionRequire-container {
+          display: flex;
+          flex-direction: column;
+          width: 250px;
+          height: inherit;
+          .signinOptionRequire {
+            display: inherit;
+
+            @keyframes requireRed {
+              from {
+                background-color: rgb(29, 5, 5);
+              }
+              to {
+                background-color: rgb(200, 32, 32);
+              }
+            }
+
+            @keyframes requireYelow {
+              from {
+                background-color: rgb(29, 5, 5);
+              }
+              to {
+                background-color: rgb(194, 200, 32);
+              }
+            }
+
+            #requireError {
+              animation-name: requireRed;
+              animation-iteration-count: infinite;
+              animation-direction: alternate;
+              animation-duration: 2s;
+            }
+
+            #requireWarn {
+              animation-name: requireYelow;
+              animation-iteration-count: infinite;
+              animation-direction: alternate;
+              animation-duration: 2s;
+            }
+
+            #requireAccept {
+              background-color: green;
+            }
+
+            .requireCircle {
+              height: 7px;
+              width: 7px;
+              background-color: transparent;
+              border-radius: 50%;
+              border: 1px double rgb(38, 38, 38);
+              margin: 6px 8px 0 9px;
+            }
+            label {
+              color: rgb(176, 176, 176);
+            }
+          }
+        }
+        .signinButton {
+          width: 75px;
+          background: #961f1f46;
+          color: rgb(255, 255, 255);
+
+          &:disabled{
+            background: none;
+          }
+        }
+      }
+    }
+  }
+}
