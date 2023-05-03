@@ -51,6 +51,7 @@ const SignIn = () => {
   const require3 = createRef();
   const require4 = createRef();
   const [isDisabled, setDisabled] = useState("disabled");
+
   async function checkRequireData() {
     async function nicknameIsFree() {
       let status = false;
@@ -144,7 +145,7 @@ const SignIn = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: `${inputNickname.current.value}`,
+          nickname: `${inputNickname.current.value}`,
           password: `${await sha256(inputPassword.current.value)}`,
         }),
       })

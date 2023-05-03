@@ -4,6 +4,7 @@ const PORT = process.env.PORT || 3001
 
  const app = express()
  const login = require('./routes/auth/login.js')
+ const signin = require('./routes/auth/signin.js')
  const whoami = require('./routes/auth/whoami.js')
  const chatList = require('./routes/message/chatList.js')
  const messages = require('./routes/message/messages.js')
@@ -14,6 +15,7 @@ const PORT = process.env.PORT || 3001
  
 app.use(express.json());
 app.use('/api/auth/',  login)
+app.use('/api/auth/',  signin)
 app.use('/api/users/', nicknameisAvailable)
 
 app.use(midleware)
