@@ -71,69 +71,92 @@ const SignIn = () => {
       return status;
     }
 
-    let requireStatus = [];
+    function createRequireStatus() {
+      const requireStatus = [];
 
-    //nickname
-    if (inputNickname.current.value != "") {
-      if (
-        inputNickname.current.value.length >= 3 &&
-        inputNickname.current.value.length <= 16
-      ) {
-        (async () => {
+      function setRequireStatus(index, number) {
+        if (index && number != undefined) {
+          console.log(requireStatus);
+          requireStatus[index] = number;
+        }
+        return requireStatus;
+      }
+      return function (index, number) {
+        return setRequireStatus(index, number);
+      };
+    }
+
+    const setRequireStatus = createRequireStatus();
+    // [1] Nickame is unique
+    // [2] The number of characters in nickname is not less than 3 and not more than 16
+    // [3] The number of characters in password is not less than 8
+    // [4] Password doesn't contain space
+    (async function () {
+
+      //nickname
+      if (inputNickname.current.value != "") {
+        if (
+          inputNickname.current.value.length >= 3 &&
+          inputNickname.current.value.length <= 16
+        ) {
           const result = await nicknameIsFree();
           if (result) {
-            requireStatus[0] = 1;
             require1.current.id = "requireAccept";
+            setRequireStatus(1, 1);
           } else {
-            requireStatus[0] = 0;
             require1.current.id = "requireError";
+            setRequireStatus(1, 0);
           }
-        })();
 
-        requireStatus[1] = 1;
-        require2.current.id = "requireAccept";
+          setRequireStatus(2, 1);
+          require2.current.id = "requireAccept";
+        } else {
+          setRequireStatus(2, 0);
+          require2.current.id = "requireError";
+        }
       } else {
-        requireStatus[1] = 0;
-        require2.current.id = "requireError";
-      }
-    } else {
-      require1.current.id = "";
-      require2.current.id = "";
-      requireStatus[0] = 0;
-      requireStatus[1] = 0;
-    }
-
-    //password
-    if (inputPassword.current.value != "") {
-      if (inputPassword.current.value.length >= 8) {
-        requireStatus[2] = 1;
-        require3.current.id = "requireAccept";
-      } else {
-        requireStatus[2] = 0;
-        require3.current.id = "requireError";
+        require1.current.id = "";
+        require2.current.id = "";
+        setRequireStatus(1, 0);
+        setRequireStatus(2, 0);
       }
 
-      if (inputPassword.current.value.indexOf(" ") === -1) {
-        requireStatus[3] = 1;
-        require4.current.id = "requireAccept";
-      } else {
-        requireStatus[3] = 0;
-        require4.current.id = "requireError";
-      }
-    } else {
-      require3.current.id = "";
-      require4.current.id = "";
-      requireStatus[2] = 0;
-      requireStatus[3] = 0;
-    }
+      //password
+      if (inputPassword.current.value != "") {
+        if (inputPassword.current.value.length >= 8) {
+          setRequireStatus(3, 1);
+          require3.current.id = "requireAccept";
+        } else {
+          setRequireStatus(3, 0);
+          require3.current.id = "requireError";
+        }
 
-    if (requireStatus.every((status) => status === 1)) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
+        if (inputPassword.current.value.indexOf(" ") === -1) {
+          setRequireStatus(4, 1);
+          require4.current.id = "requireAccept";
+        } else {
+          setRequireStatus(4, 0);
+          require4.current.id = "requireError";
+        }
+      } else {
+        require3.current.id = "";
+        require4.current.id = "";
+        setRequireStatus(3, 0);
+        setRequireStatus(4, 0);
+      }
+
+      checkRequireStatus();
+
+      function checkRequireStatus() {
+        let requireStatus = setRequireStatus();
+        if (requireStatus.every((status) => status === 1)) {
+          setDisabled(false);
+        } else {
+          setDisabled(true);
+        }
+      }
+    })();
   }
-
   async function SignInFetch() {
     if (
       inputNickname.current.value != "" &&
