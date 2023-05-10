@@ -180,7 +180,7 @@ const SignIn = () => {
   }
 
   function redirect(response) {
-    if (response.message == "ok") {
+    if (response === true) {
       console.log(response);
       return navigate("/main", { replace: true });
     } else {

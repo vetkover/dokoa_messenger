@@ -7,7 +7,7 @@ router.post('/login',async (req,res) => {
     
     let result =  await mongo.module.login(req.body)
     const rememberMe = req.body.remember ? 604800000 : false;
-    if(JSON.parse(result).message == "ok"){
+    if(result === true){
         res
         .cookie("token", await tokenGenerate.module.tokenGenerate(req), { maxAge: Number(rememberMe)})
     }

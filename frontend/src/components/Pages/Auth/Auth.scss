@@ -3,6 +3,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
   .Auth-container {
     display: flex;
     justify-content: center;
@@ -16,6 +17,10 @@
       img {
         height: 150px;
       }
+    }
+
+    .userAlreadyLogin{
+      color: white;
     }
 
     .loginContainer {
@@ -73,6 +78,13 @@
           width: 75px;
           background: #961f1f46;
           color: rgb(255, 255, 255);
+        }
+        .comebackButton {
+          width: 85px;
+          background: #961f1f46;
+          color: rgb(255, 255, 255);
+          white-space: nowrap;
+          display: none;
         }
       }
     }

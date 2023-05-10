@@ -1,13 +1,5 @@
 import React, { Component, createRef, useEffect, useState } from "react";
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  Router,
-  NavLink,
-  useNavigate,
-} from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import { whoami } from "../../Modules/api/whoami";
 
 import "../Auth/Auth.scss";
@@ -17,6 +9,7 @@ import eye_open from "../Auth/resource/eye_open.svg";
 import eye_close from "../Auth/resource/eye_close.svg";
 
 let whoamiData = undefined;
+let userAlreadyLogin;
 const promise = whoami(window.navigate);
 promise
   .then((result) => {
@@ -24,19 +17,7 @@ promise
   })
   .then((result) => window.userIsAuthUpdate());
 
-function UserIsAuth() {
-  const [updateMe, setUpdateMe] = useState(null);
 
-  function userIsAuthUpdate() {
-    setUpdateMe(0);
-  }
-
-  window.userIsAuthUpdate = userIsAuthUpdate;
-
-  if (whoamiData?.username != undefined) {
-    return <div>it's seams as you already login {whoamiData.username}</div>;
-  }
-}
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -45,9 +26,28 @@ const Auth = () => {
   const inputPassword = createRef();
   const inputRemember = createRef();
   const passwordImgBtn = createRef();
+  const comebackButton = createRef();
 
   window.navigate = navigate;
-
+  function UserIsAuth() {
+    const [updateMe, setUpdateMe] = useState(null);
+  
+    function userIsAuthUpdate() {
+      setUpdateMe(0);
+    }
+  
+    window.userIsAuthUpdate = userIsAuthUpdate;
+    if (whoamiData?.username != undefined) {
+      comebackButton.current.style.display = "initial"
+      return( 
+        <div>
+          <div className="userAlreadyLogin">
+            Hey, it seems like you are already logged in as {whoamiData.username}
+          </div>
+        </div>
+      );
+    }
+  }
   let [eyeOption, setEyeOption] = useState(eye_close);
 
   const eyeChange = () => {
@@ -70,7 +70,7 @@ const Auth = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: `${inputEmail.current.value}`,
+          nickname: `${inputEmail.current.value}`,
           password: `${await sha256(inputPassword.current.value)}`,
           remember: `${inputRemember.current.checked}`,
         }),
@@ -83,7 +83,7 @@ const Auth = () => {
   }
 
   function redirect(response) {
-    if (response.message == "ok") {
+    if (response === true) {
       console.log(response);
       return navigate("/main", { replace: true });
     } else {
@@ -117,9 +117,12 @@ const Auth = () => {
               <label>Remember me?</label>
               <input ref={inputRemember} type="checkbox"></input>
             </div>
-            <button className="loginButton" onClick={login}>
+            <div className="optionButtonContainer">
+            <button className="loginButton" onClick={login} >
               login
             </button>
+            <button className="comebackButton" onClick={() =>{navigate('/main')}} ref={comebackButton}>Come Back</button>
+            </div>
           </div>
         </div>
         <UserIsAuth />

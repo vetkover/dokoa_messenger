@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import "../Main/Main.scss";
 import { whoami } from "../../Modules/api/whoami";
 
 import avatar from "../../resource/avatar.png";
-
 
 function MessagelistContent() {
   const [isLoading, setIsLoading] = useState(true);
@@ -19,12 +18,13 @@ function MessagelistContent() {
   window.isChatId = isChatId;
   window.whoamiResult = whoami(Navigate);
 
-
   const [whoamiData, setWhoamiData] = useState(null);
 
   useEffect(() => {
     const whoamiData = window.whoamiResult.then((data) => setWhoamiData(data));
-  }, []);
+    const chatWindowMessages = document.querySelector(".chatWindow-messages");
+    chatWindowMessages.scrollTop = chatWindowMessages.scrollHeight;
+  }, [data]);
 
   if (isLoading && isChatId != null) {
     fetch(`/api/message/messages?id=${isChatId}`)
@@ -55,7 +55,8 @@ function MessagelistContent() {
           </div>
         </div>
       );
-    });
+    } 
+  );
     return <React.Fragment> {userList} </React.Fragment>;
   }
 }
@@ -66,6 +67,12 @@ function Main() {
   const chatWindowMessages = useRef();
   const navigate = useNavigate();
   window.navigate = navigate;
+
+  useEffect(() => {
+    chatWindowMessages.current.scrollTop =
+      chatWindowMessages.current.scrollHeight;
+  }, []);
+
   function sendMessage() {
     fetch(`/api/message/sendMessage?id=${window.isChatId}`, {
       method: "POST",
@@ -88,7 +95,7 @@ function Main() {
       <div className="chatWindow-container">
         <div className="chatWindow-body">
           <div className="chatWindow-messages" ref={chatWindowMessages}>
-            <MessagelistContent referer={chatWindowMessages}/>
+            <MessagelistContent />
           </div>
           <div className="chatWindow-controlPanel">
             <div className="chatWindow-controlPanel_Container">
@@ -110,14 +117,14 @@ function Main() {
 function ChatlistContent() {
   const [isData, setData] = useState(null);
   let isLoading = useRef(false);
-  
+
   let whoamiData = useRef(null);
 
   useEffect(() => {
-    async function getWhoamiData(){ 
-      whoamiData = await whoami(window.navigate)
+    async function getWhoamiData() {
+      whoamiData = await whoami(window.navigate);
     }
-    
+
     async function fetchData() {
       await getWhoamiData();
       const response = await fetch(`/api/message/chatList?id=${whoamiData.id}`);
@@ -125,10 +132,9 @@ function ChatlistContent() {
       setData({ data });
       isLoading.current = true;
     }
-   
+
     fetchData();
   }, []);
-  
 
   if (!isLoading.current) {
     return <div>Loading...</div>;

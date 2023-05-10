@@ -2,9 +2,6 @@ const mongo = require('./mongoCallBack.js')
 
 const findNickname = require('./findNickname.js')
 
-
-
-
 async function signin(body) {
 
     const userNotExist = await findNickname.module.findNickname(body) === false;
@@ -30,9 +27,9 @@ async function signin(body) {
       })
 
       console.log((await createUser).acknowledged)
-
+      return (userNotExist && (await createUser).acknowledged) ? true : false;
     }
-    return (userNotExist && (await createUser).acknowledged) ? true : false;
+    
 }
 
  exports.module = {signin};
