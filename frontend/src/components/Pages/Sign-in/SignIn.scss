@@ -17,19 +17,25 @@
     }
 
     .logoContainer {
+      z-index: 5;
       display: flex;
-      margin-bottom: 12px;
+      margin-bottom: 0;
       background: #3f3f3f;
+      width: 500px;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      
       img {
         height: 150px;
       }
     }
 
     .signinContainer {
+      z-index: 5;
       display: contents;
       background: #3f3f3f;      
       .signinForm {
-        animation: trustKeyAnimation 2s;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -164,6 +170,13 @@
         width: 200px;
         height: 95px;
         margin-bottom: 10px;
+
+        button{
+          width: inherit;
+          height: inherit;
+          background: transparent;
+          border: none;
+        }
 
         svg {
           margin-top: -4px;

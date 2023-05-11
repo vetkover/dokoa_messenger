@@ -26,13 +26,24 @@ import {ReactComponent as FileIco} from "../Sign-in/resource/fileIco.svg";
 //    window.userIsAuthUpdate()
 //  );
 
+var trustKeyValue;
+
+function genTrustKeyFile() {
+    const file = new File([trustKeyValue], "trustKey.nitoro", {type: "text/plain"})
+    var downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(file);
+    downloadLink.download = "trustKey.nitoro";
+    downloadLink.click();  
+}
 
 const TrustKey = () =>{
   return(
     <div className="trustKey-body">
       <div className="file-container">
+        <button id="file-containerButton" disabled={window.isButtonIsDisable} onClick={() =>{genTrustKeyFile()}}>
         <FileIco />
-        <p>please take your trust key</p>
+        <p id="trustKeyText" ></p>
+        </button>
       </div>
       <p>download the file and save it to restore access to your account </p>
       <p>( this is your only one recovery method :D )</p>
@@ -66,6 +77,8 @@ const SignIn = () => {
   const require3 = createRef();
   const require4 = createRef();
   const [isDisabled, setDisabled] = useState("disabled");
+  const [isButtonIsDisable, setButtonIsDisable] = useState("true")
+  window.isButtonIsDisable = isButtonIsDisable;
 
   async function checkRequireData() {
     async function nicknameIsFree() {
@@ -171,6 +184,8 @@ const SignIn = () => {
       }
     })();
   }
+
+
   async function SignInFetch() {
     if (
       inputNickname.current.value != "" &&
@@ -188,9 +203,19 @@ const SignIn = () => {
       })
         .then((response) => response.json())
         .then((response) => {
-          redirect(response);
+          trustKeyValue = response.trustKey
+          animationSet()
         });
     }
+  }
+
+  function animationSet(){
+    var signinForm = document.getElementsByClassName("signinForm")[0]
+    signinForm.style.animation = "trustKeyAnimation 1s forwards";
+    const trustKeyText = document.getElementById("trustKeyText")
+    trustKeyText.innerHTML = "please take your trust key"
+    setButtonIsDisable(false)
+    
   }
 
   function redirect(response) {
@@ -206,9 +231,10 @@ const SignIn = () => {
       <div className="SighIn-container">
         <div className="logoContainer">
           <img src={logo}></img>
+          <p>Time to shape your persona ^_^</p>
         </div>
         <div className="signinContainer">
-          <p>Time to shape your persona ^_^</p>
+          
           <div className="signinForm">
             <div className="signinOption">
               <label>username</label>

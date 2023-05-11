@@ -1,7 +1,7 @@
 const express = require('express')
 router = express.Router()
 const mongo = require('../../components/Modules/database/findNickname.js')
-const tokenGenerate = require('../../components/Modules/token/tokenGenerate.js')
+const tokenGenerate = require('../../components/Modules/generators/tokenGenerate.js')
 
 router.post('/nicknameisAvailable', async (req,res) => {
     
