@@ -10,12 +10,7 @@ import eye_close from "../Auth/resource/eye_close.svg";
 
 let whoamiData = undefined;
 let userAlreadyLogin;
-const promise = whoami(window.navigate);
-promise
-  .then((result) => {
-    whoamiData = result;
-  })
-  .then((result) => window.userIsAuthUpdate());
+
 
 
 
@@ -29,15 +24,21 @@ const Auth = () => {
   const comebackButton = createRef();
 
   window.navigate = navigate;
+  const promise = whoami(window.navigate);
+  promise
+  .then((result) => {
+    whoamiData = result;
+  })
+  .then((result) => window.userIsAuthUpdate());
   function UserIsAuth() {
     const [updateMe, setUpdateMe] = useState(null);
   
     function userIsAuthUpdate() {
-      setUpdateMe(0);
+      setUpdateMe(updateMe + 1);
     }
   
     window.userIsAuthUpdate = userIsAuthUpdate;
-    if (whoamiData?.username != undefined) {
+    if (whoamiData?.username != undefined && comebackButton.current != null) {
       comebackButton.current.style.display = "initial"
       return( 
         <div>

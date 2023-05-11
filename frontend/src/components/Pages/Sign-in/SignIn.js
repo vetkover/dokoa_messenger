@@ -15,6 +15,7 @@ import sha256 from "../../Modules/crypt/sha256Hash";
 import logo from "../../resource/logo.png";
 import eye_open from "../Auth/resource/eye_open.svg";
 import eye_close from "../Auth/resource/eye_close.svg";
+import fileIco from "../Sign-in/resource/fileIco.svg";
 
 //let whoamiData = undefined;
 //const promise = whoami(window.navigate);
@@ -24,6 +25,17 @@ import eye_close from "../Auth/resource/eye_close.svg";
 //  .then(result =>
 //    window.userIsAuthUpdate()
 //  );
+
+
+const TrustKey = () =>{
+  return(
+    <div className="trustKey-body">
+      <div className="file-container">
+        <svg src={fileIco} ></svg>
+      </div>
+    </div>
+  )
+}
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -92,7 +104,6 @@ const SignIn = () => {
     // [3] The number of characters in password is not less than 8
     // [4] Password doesn't contain space
     (async function () {
-
       //nickname
       if (inputNickname.current.value != "") {
         if (
@@ -255,6 +266,9 @@ const SignIn = () => {
             </button>
           </div>
         </div>
+      </div>
+      <div className="trustKey-container">
+        <TrustKey></TrustKey>
       </div>
     </div>
   );

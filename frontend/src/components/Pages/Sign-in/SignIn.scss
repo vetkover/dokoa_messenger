@@ -135,4 +135,24 @@
       }
     }
   }
+  .trustKey-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #3f3f3f;
+    width: 500px;
+    height: 170px;
+    .trustKey-body{
+      .file-container{
+        border: 2px solid #707070;
+        border-radius: 10px;
+        width: 200px;
+        height: 100px;
+
+        svg{
+        }
+      }
+    }
+  }
 }
