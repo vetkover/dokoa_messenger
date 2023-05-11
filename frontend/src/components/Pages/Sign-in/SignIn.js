@@ -15,7 +15,7 @@ import sha256 from "../../Modules/crypt/sha256Hash";
 import logo from "../../resource/logo.png";
 import eye_open from "../Auth/resource/eye_open.svg";
 import eye_close from "../Auth/resource/eye_close.svg";
-import fileIco from "../Sign-in/resource/fileIco.svg";
+import {ReactComponent as FileIco} from "../Sign-in/resource/fileIco.svg";
 
 //let whoamiData = undefined;
 //const promise = whoami(window.navigate);
@@ -31,8 +31,11 @@ const TrustKey = () =>{
   return(
     <div className="trustKey-body">
       <div className="file-container">
-        <svg src={fileIco} ></svg>
+        <FileIco />
+        <p>please take your trust key</p>
       </div>
+      <p>download the file and save it to restore access to your account </p>
+      <p>( this is your only one recovery method :D )</p>
     </div>
   )
 }

@@ -4,6 +4,7 @@
   align-items: center;
   flex-direction: column;
   .SighIn-container {
+    z-index: 5;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,6 +19,7 @@
     .logoContainer {
       display: flex;
       margin-bottom: 12px;
+      background: #3f3f3f;
       img {
         height: 150px;
       }
@@ -25,7 +27,9 @@
 
     .signinContainer {
       display: contents;
+      background: #3f3f3f;      
       .signinForm {
+        animation: trustKeyAnimation 2s;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -135,7 +139,7 @@
       }
     }
   }
-  .trustKey-container{
+  .trustKey-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -143,16 +147,51 @@
     background: #3f3f3f;
     width: 500px;
     height: 170px;
-    .trustKey-body{
-      .file-container{
+
+    .trustKey-body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
+      .file-container {
+        display: inherit;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
         border: 2px solid #707070;
         border-radius: 10px;
         width: 200px;
-        height: 100px;
+        height: 95px;
+        margin-bottom: 10px;
 
-        svg{
+        svg {
+          margin-top: -4px;
+          width: 41px;
+          height: 53px;
+          fill: white;
+        }
+        p {
+          color: whitesmoke;
         }
       }
+      P {
+        color: whitesmoke;
+        margin: 0;
+      }
+    }
+  }
+  @keyframes trustKeyAnimation {
+    from {
+      transform: translateY(0);
+      height: 240px;
+      z-index: 0;
+    }
+
+    to {
+      transform: translateY(-350px);
+      height: 0;
+      z-index: 0;
     }
   }
 }
