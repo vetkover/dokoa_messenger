@@ -77,7 +77,7 @@ const SignIn = () => {
   const require3 = createRef();
   const require4 = createRef();
   const [isDisabled, setDisabled] = useState("disabled");
-  const [isButtonIsDisable, setButtonIsDisable] = useState("true")
+  const [isButtonIsDisable, setButtonIsDisable] = useState(true)
   window.isButtonIsDisable = isButtonIsDisable;
 
   async function checkRequireData() {

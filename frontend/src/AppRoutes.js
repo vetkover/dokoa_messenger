@@ -1,7 +1,7 @@
 import Auth from "./components/Pages/Auth/Auth"
 import Main from "./components/Pages/Main/Main"
 import SignIn from "./components/Pages/Sign-in/SignIn"
-
+import Recovery from "./components/Pages/Recovery/Recovery.js"
 const AppRoutes = [
 {
   index: true,
@@ -18,6 +18,10 @@ const AppRoutes = [
   {
     path: "sign-in",
     element: <SignIn />
+  },
+  {
+    path: "recovery",
+    element: <Recovery />
   }
 
 ];

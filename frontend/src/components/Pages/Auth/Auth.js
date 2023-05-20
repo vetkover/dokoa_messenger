@@ -11,9 +11,15 @@ import eye_close from "../Auth/resource/eye_close.svg";
 let whoamiData = undefined;
 let userAlreadyLogin;
 
+function globalNavigate(navigateObj){
+  let navigate;
+  navigateObj != undefined ? navigate = navigateObj : navigateObj = null; 
+  return function(){
+      return navigate
+  }
+}
 
-
-
+const promise = whoami(window.navigate);
 const Auth = () => {
   const navigate = useNavigate();
 
@@ -23,8 +29,8 @@ const Auth = () => {
   const passwordImgBtn = createRef();
   const comebackButton = createRef();
 
-  window.navigate = navigate;
-  const promise = whoami(window.navigate);
+  globalNavigate(navigate)
+
   promise
   .then((result) => {
     whoamiData = result;
@@ -131,7 +137,11 @@ const Auth = () => {
 
       <div className="Auth-UserOptions">
         <div id="button-left">
-          <button>forgot password?</button>
+          <button
+          onClick={() => {
+              navigate("/recovery");
+            }}>
+              forgot password?</button>
         </div>
         <div id="button-right">
           <button
