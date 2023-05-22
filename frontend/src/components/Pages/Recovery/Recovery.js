@@ -45,9 +45,9 @@ const TrustKey = () => {
     }
     
     function SendFetch(files){
-      fetch(`/recoveryByTrustkey`, {
+      fetch(`/api/auth/recoveryByTrustkey`, {
         method: "POST",
-        body: formData
+        body: files[nitoroFileIndex]
       })
     }
 

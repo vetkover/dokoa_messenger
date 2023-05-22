@@ -5,7 +5,8 @@ const tokenGenerate = require('../../components/Modules/generators/tokenGenerate
 
 router.post('/recoveryByTrustkey',async (req,res) => {
     
-    const fileBody = req.body
+    const fileBody = req.body.file
+    console.log(req.body)
     res
     .json( fileBody );
 

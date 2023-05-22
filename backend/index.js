@@ -18,9 +18,10 @@ app.use('/api/auth/',  login)
 app.use('/api/auth/',  signin)
 app.use('/api/users/', nicknameisAvailable)
 app.use('/api/auth/',  recoveryByTrustkey)
-app.use('/api/auth/', whoami)
+
 
 app.use(midleware)
+app.use('/api/auth/', whoami)
 app.use('/api/message/', chatList)
 app.use('/api/message/', messages)
 app.use('/api/message/', sendMessage)
