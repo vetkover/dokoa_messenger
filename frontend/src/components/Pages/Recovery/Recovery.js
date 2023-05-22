@@ -16,41 +16,49 @@ import eye_open from "../Auth/resource/eye_open.svg";
 import eye_close from "../Auth/resource/eye_close.svg";
 import { ReactComponent as FileIco } from "../Sign-in/resource/fileIco.svg";
 
-//let whoamiData = undefined;
-//const promise = whoami(window.navigate);
-//promise.then(result => {
-//    whoamiData = result
-//  })
-//  .then(result =>
-//    window.userIsAuthUpdate()
-//  );
-
 const TrustKey = () => {
   const [isDropStatus, setDropStatus] = useState(null);
 
-  const formData = new FormData();
-
-  function sendKeyToServer(files){
+  async function sendKeyToServer(files){
     
     let nitoroFileIndex;
+
     for(let i = 0; i < files.length; i++){
       const fileName = files[i].name;
       const regex = new RegExp(`\.nitoro$`);
       if(regex.test(fileName)){
         nitoroFileIndex = i;
-        formData.append("file", files[nitoroFileIndex]);
         SendFetch(files)
         break;
       }
     }
     
-    function SendFetch(files){
-      fetch(`/api/auth/recoveryByTrustkey`, {
-        method: "POST",
-        body: files[nitoroFileIndex]
-      })
-    }
 
+    async function SendFetch(files) {
+
+      let reader = new FileReader();
+      reader.readAsText(files[nitoroFileIndex])
+      reader.onload = function() {
+        const value = reader.result
+        fetch('/api/auth/createRecoveryToken', {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            value: value
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }
+
+    }
   }
 
   function onDropStartHandler(e) {

@@ -11,13 +11,14 @@ const PORT = process.env.PORT || 3001
  const sendMessage = require('./routes/message/sendMessage.js')
  const nicknameisAvailable = require('./routes/users/nicknameisAvailable.js')
  const recoveryByTrustkey = require('./routes/auth/recoveryByTrustkey.js') 
- 
+ const createRecoveryToken = require('./routes/auth/createRecoveryToken.js') 
  
 app.use(express.json());
 app.use('/api/auth/',  login)
 app.use('/api/auth/',  signin)
 app.use('/api/users/', nicknameisAvailable)
 app.use('/api/auth/',  recoveryByTrustkey)
+app.use('/api/auth/',  createRecoveryToken)
 
 
 app.use(midleware)

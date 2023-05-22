@@ -21,7 +21,7 @@ function cookie(req){
           res
           .status(401)
           .json({ 
-              message: "anonimous",
+              message: "anonymous",
           });
         }
       });

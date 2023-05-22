@@ -9,7 +9,7 @@
     })
     .then(response => response.json())
     .then(response => {
-      if(response.message === "anonimous"){
+      if(response.message === "anonymous"){
         navigate("/auth");
         return null;
       } else {

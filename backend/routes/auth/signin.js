@@ -6,7 +6,6 @@ const tokenGenerate = require('../../components/Modules/generators/tokenGenerate
 
 router.post("/signin", async (req, res) => {
   let result = await mongo.module.signin(req.body);
-  console.log( `${result.status} trustkey`)
   if (result.status == true) {
     res
     .cookie("token", await tokenGenerate.module.tokenGenerate(req))

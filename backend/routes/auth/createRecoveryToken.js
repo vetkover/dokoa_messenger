@@ -2,7 +2,7 @@ const express = require('express')
 router = express.Router()
 const mongo = require('../../components/Modules/database/findTrustKeyUser.js')
 
-router.post('/recoveryByTrustkey',async (req,res) => {
+router.post('/createRecoveryToken',async (req,res) => {
     const result = await mongo.module.findTrustKeyUser(req.body.value);
 
     if(result){
