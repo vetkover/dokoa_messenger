@@ -28,6 +28,31 @@ import { ReactComponent as FileIco } from "../Sign-in/resource/fileIco.svg";
 const TrustKey = () => {
   const [isDropStatus, setDropStatus] = useState(null);
 
+  const formData = new FormData();
+
+  function sendKeyToServer(files){
+    
+    let nitoroFileIndex;
+    for(let i = 0; i < files.length; i++){
+      const fileName = files[i].name;
+      const regex = new RegExp(`\.nitoro$`);
+      if(regex.test(fileName)){
+        nitoroFileIndex = i;
+        formData.append("file", files[nitoroFileIndex]);
+        SendFetch(files)
+        break;
+      }
+    }
+    
+    function SendFetch(files){
+      fetch(`/recoveryByTrustkey`, {
+        method: "POST",
+        body: formData
+      })
+    }
+
+  }
+
   function onDropStartHandler(e) {
     e.preventDefault();
     setDropStatus(true);
@@ -40,9 +65,9 @@ const TrustKey = () => {
 
   function onDropHandler(e) {
     e.preventDefault();
-    let files = [e.dataTransfer.files];
-    console.log(files);
+    let files = e.dataTransfer.files;
     setDropStatus(false);
+    sendKeyToServer(files);
   }
 
   return (
@@ -75,8 +100,7 @@ const TrustKey = () => {
           </div>
         )}
       </div>
-      <p>download the file and save it to restore access to your account </p>
-      <p>( this is your only one recovery method :D )</p>
+      <p>upload your account trustKey </p>
     </div>
   );
 };
@@ -91,24 +115,25 @@ const Recovery = () => {
 
   window.navigate = navigate;
 
-  let [eyeOption, setEyeOption] = useState(eye_close);
+  const [eyeOption1, setEyeOption1] = useState(eye_close);
+  const [eyeOption2, setEyeOption2] = useState(eye_close);
 
   function eyeChange1() {
     if (inputPassword1.current.type == "password") {
-      setEyeOption(eye_open);
+      setEyeOption1(eye_open);
       inputPassword1.current.type = "text";
     } else {
-      setEyeOption(eye_close);
+      setEyeOption1(eye_close);
       inputPassword1.current.type = "password";
     }
   }
 
   function eyeChange2() {
     if (inputPassword2.current.type == "password") {
-      setEyeOption(eye_open);
+      setEyeOption2(eye_open);
       inputPassword2.current.type = "text";
     } else {
-      setEyeOption(eye_close);
+      setEyeOption2(eye_close);
       inputPassword2.current.type = "password";
     }
   }
@@ -154,7 +179,7 @@ const Recovery = () => {
               <img
                 ref={passwordImgBtn}
                 id="passwordImgBtn"
-                src={eyeOption}
+                src={eyeOption1}
                 onClick={eyeChange1}
               ></img>
             </div>
@@ -169,7 +194,7 @@ const Recovery = () => {
               <img
                 ref={passwordImgBtn}
                 id="passwordImgBtn"
-                src={eyeOption}
+                src={eyeOption2}
                 onClick={eyeChange2}
               ></img>
             </div>
